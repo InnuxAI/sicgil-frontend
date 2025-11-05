@@ -8,6 +8,8 @@ import {
   type ChatMessage
 } from '@/types/os'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777";
+
 interface Store {
   hydrated: boolean
   setHydrated: () => void
@@ -84,7 +86,7 @@ export const useStore = create<Store>()(
             typeof messages === 'function' ? messages(state.messages) : messages
         })),
       chatInputRef: { current: null },
-      selectedEndpoint: 'http://localhost:7777',
+      selectedEndpoint: API_URL,
       setSelectedEndpoint: (selectedEndpoint) =>
         set(() => ({ selectedEndpoint })),
       authToken: '',

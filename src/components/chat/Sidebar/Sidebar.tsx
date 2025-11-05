@@ -17,7 +17,7 @@ import { useQueryState } from 'nuqs'
 import { truncateText } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 
-const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777";
 
 const CollapsibleSection = ({
   title,
@@ -223,7 +223,7 @@ const Endpoint = () => {
                   <p className="text-xs font-medium text-muted">
                     {isMounted
                       ? truncateText(selectedEndpoint, 21) ||
-                        ENDPOINT_PLACEHOLDER
+                        API_URL
                       : 'http://localhost:7777'}
                   </p>
                   <div
