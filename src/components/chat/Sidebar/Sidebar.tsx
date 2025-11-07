@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
+import Library from './Library'
 import AuthToken from './AuthToken'
 import UserProfile from './UserProfile'
 import { isValidUrl } from '@/lib/utils'
@@ -16,6 +17,7 @@ import { toast } from 'sonner'
 import { useQueryState } from 'nuqs'
 import { truncateText } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777";
 
@@ -362,7 +364,22 @@ const Sidebar = ({
                     )}
                   </motion.div>
                 </CollapsibleSection>
-                <Sessions />
+                <Tabs defaultValue="sessions" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-2">
+                    <TabsTrigger value="sessions" className="text-xs">
+                      Sessions
+                    </TabsTrigger>
+                    <TabsTrigger value="library" className="text-xs">
+                      Library
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="sessions" className="mt-0">
+                    <Sessions />
+                  </TabsContent>
+                  <TabsContent value="library" className="mt-0">
+                    <Library />
+                  </TabsContent>
+                </Tabs>
               </>
             )}
           </>

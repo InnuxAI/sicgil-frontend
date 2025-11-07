@@ -5,11 +5,15 @@ import type { ChatMessage } from '@/types/os'
 import Videos from './Multimedia/Videos'
 import Images from './Multimedia/Images'
 import Audios from './Multimedia/Audios'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import AgentThinkingLoader from './AgentThinkingLoader'
 import { CopyButton } from '@/components/ui/shadcn-io/copy-button'
 import { Button } from '@/components/ui/button'
-import { RotateCcw } from 'lucide-react'
+import { RotateCcw, Bookmark } from 'lucide-react'
+import { toast } from 'sonner'
+import { authService } from '@/lib/auth/service'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777"
 
 interface MessageProps {
   message: ChatMessage
@@ -106,6 +110,44 @@ const AgentMessage = ({ message, onRetry }: MessageProps) => {
 }
 
 const UserMessage = memo(({ message }: MessageProps) => {
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSavePrompt = async () => {
+    if (!message.content) return
+
+    try {
+      setIsSaving(true)
+      const authToken = authService.getToken()
+      
+      if (!authToken) {
+        toast.error('Please sign in to save prompts')
+        return
+      }
+
+      const response = await fetch(`${API_URL}/prompts/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        },
+        body: JSON.stringify({
+          prompt: message.content,
+        }),
+      })
+
+      if (response.ok) {
+        toast.success('Prompt saved to library!')
+      } else {
+        toast.error('Failed to save prompt')
+      }
+    } catch (error) {
+      console.error('Failed to save prompt:', error)
+      toast.error('Failed to save prompt')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
   return (
     <div className="group flex items-start justify-end gap-4 pt-4 max-md:break-words">
       <div className="flex flex-col items-end gap-2">
@@ -131,15 +173,25 @@ const UserMessage = memo(({ message }: MessageProps) => {
             ))}
           </div>
         )}
-        {/* Copy button for user message */}
+        {/* Copy and Bookmark buttons for user message */}
         {message.content && (
-          <div className="opacity-0 transition-opacity group-hover:opacity-100">
+          <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
             <CopyButton 
               content={message.content} 
               size="sm" 
               variant="ghost"
               className="text-muted-foreground hover:text-foreground"
             />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSavePrompt}
+              disabled={isSaving}
+              className="text-muted-foreground hover:text-foreground h-6 w-6 p-0"
+              title="Save to library"
+            >
+              <Bookmark className="h-3 w-3" />
+            </Button>
           </div>
         )}
       </div>
