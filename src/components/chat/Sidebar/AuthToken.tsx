@@ -69,7 +69,7 @@ const AuthToken = ({
             onChange={(e) => setTokenValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter authentication token..."
-            className="flex h-9 w-full items-center text-ellipsis rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium text-muted placeholder:text-muted/50"
+            className="flex h-9 w-full items-center text-ellipsis rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium placeholder:text-muted/50"
             autoFocus
           />
           <Button

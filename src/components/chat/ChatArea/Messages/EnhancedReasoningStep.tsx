@@ -68,8 +68,8 @@ const EnhancedReasoningStep = memo(({ step, index }: EnhancedReasoningStepProps)
 
         {/* Result */}
         {step.result && (
-          <div className="rounded-lg bg-green-500/10 p-3 border border-green-500/20">
-            <p className="text-xs font-semibold mb-2 text-green-600 dark:text-green-400 flex items-center gap-1.5">
+          <div className="rounded-lg bg-positive/10 p-3 border border-positive/20">
+            <p className="text-xs font-semibold mb-2 text-positive flex items-center gap-1.5">
               <Target className="h-3.5 w-3.5" />
               Result:
             </p>

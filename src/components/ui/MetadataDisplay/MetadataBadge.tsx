@@ -14,10 +14,10 @@ interface MetadataBadgeProps {
 
 const variantStyles = {
   default: 'bg-accent/20 text-primary/80',
-  success: 'bg-green-500/20 text-green-500',
-  warning: 'bg-yellow-500/20 text-yellow-500',
-  error: 'bg-red-500/20 text-red-500',
-  info: 'bg-blue-500/20 text-blue-500'
+  success: 'bg-positive/20 text-positive',
+  warning: 'bg-brand/20 text-brand',
+  error: 'bg-destructive/20 text-destructive',
+  info: 'bg-primary/20 text-primary-accent'
 } as const
 
 const sizeStyles = {

@@ -67,7 +67,7 @@ const PromptCard = ({
       )}
     >
       <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted">
+        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
           {category}
         </span>
         <blockquote className="text-sm font-medium text-primary">
@@ -138,7 +138,7 @@ const ChatBlankState = () => {
               <Icon type={icon.type} size="default" />
               </div>
               <motion.div
-              className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 transform whitespace-nowrap rounded bg-neutral-800 px-2 py-1 text-xs text-primary"
+              className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 transform whitespace-nowrap rounded bg-background-secondary px-2 py-1 text-xs text-primary"
               variants={tooltipVariants}
               initial="hidden"
               animate={
@@ -175,7 +175,7 @@ const ChatBlankState = () => {
           transition={{ duration: 0.5, delay: 0.7 }}
           className="relative mt-8 flex w-full flex-col items-center justify-center overflow-hidden"
         >
-          <h2 className="text-muted mb-6 text-sm font-medium uppercase tracking-wider">
+          <h2 className="mb-6 text-sm font-medium uppercase tracking-wider">
             An Intelligent Agent for all you needs.
           </h2>
           <div className="w-full">

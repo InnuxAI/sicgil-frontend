@@ -66,8 +66,8 @@ export default function SignUpPage() {
               height={48}
               className="rounded-lg"
             />
-            <span className="text-2xl font-bold text-white">Sicgil</span>
-            <span className="text-xl font-bold text-emerald-300 mx-2">×</span>
+            <span className="text-2xl font-bold text-foreground">Sicgil</span>
+            <span className="text-xl font-bold text-positive mx-2">×</span>
             <Image
               src="https://www.innuxai.com/innuxlogo.svg"
               alt="Innux AI Logo"
@@ -75,35 +75,35 @@ export default function SignUpPage() {
               height={48}
               className="rounded-lg"
             />
-            <span className="text-2xl font-bold text-white">Innux AI</span>
+            <span className="text-2xl font-bold text-foreground">Innux AI</span>
           </div>
         </div>
 
         <div className="relative z-10 space-y-8">
           <div>
-            <h2 className="text-4xl font-bold text-white mb-4 leading-tight">
+            <h2 className="text-4xl font-bold text-foreground mb-4 leading-tight">
               AI-Powered Document<br />Analysis & Insights
             </h2>
-            <p className="text-emerald-100 text-lg leading-relaxed">
+            <p className="text-foreground/80 text-lg leading-relaxed">
               Unlock intelligent insights from your business documents with advanced AI analysis. Streamline operations, enhance decision-making, and optimize your workflow with automated document intelligence.
             </p>
           </div>
 
           <div className="flex items-center gap-4 pt-4">
             <div className="flex -space-x-2">
-              <div className="w-10 h-10 rounded-full bg-emerald-600 border-2 border-emerald-900 flex items-center justify-center text-white text-xs font-semibold">
+              <div className="w-10 h-10 rounded-full bg-positive border-2 border-positive/50 flex items-center justify-center text-foreground text-xs font-semibold">
                 AI
               </div>
-              <div className="w-10 h-10 rounded-full bg-teal-600 border-2 border-emerald-900 flex items-center justify-center text-white text-xs font-semibold">
+              <div className="w-10 h-10 rounded-full bg-positive/80 border-2 border-positive/50 flex items-center justify-center text-foreground text-xs font-semibold">
                 ML
               </div>
-              <div className="w-10 h-10 rounded-full bg-emerald-700 border-2 border-emerald-900 flex items-center justify-center text-white text-xs font-semibold">
+              <div className="w-10 h-10 rounded-full bg-positive/90 border-2 border-positive/50 flex items-center justify-center text-foreground text-xs font-semibold">
                 NLP
               </div>
             </div>
             <div>
-              <div className="text-white font-medium text-sm">Powered by Advanced AI</div>
-              <div className="text-emerald-200 text-xs">Machine Learning • Natural Language Processing</div>
+              <div className="text-foreground font-medium text-sm">Powered by Advanced AI</div>
+              <div className="text-foreground/70 text-xs">Machine Learning • Natural Language Processing</div>
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function SignUpPage() {
 
             <Button 
               type="submit" 
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium" 
+              className="w-full bg-positive hover:bg-positive/90 text-foreground font-medium" 
               disabled={isLoading}
             >
               {isLoading ? "Creating account..." : "Create Account"}

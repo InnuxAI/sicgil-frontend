@@ -21,7 +21,7 @@ interface LibraryItemProps {
 const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const truncatePrompt = (text: string, maxLength: number = 50) => {
+  const truncatePrompt = (text: string, maxLength: number = 20) => {
     if (text.length <= maxLength) return text
     return text.substring(0, maxLength) + '...'
   }
@@ -44,13 +44,13 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
     <>
       <div
         onClick={() => setIsOpen(true)}
-        className="group relative flex cursor-pointer items-start gap-2 rounded-lg px-3 py-2 bg-accent transition-colors"
+        className="group relative flex cursor-pointer items-start gap-2 rounded-lg px-3 py-2 bg-secondary transition-colors"
       >
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-muted-foreground line-clamp-2">
+          <p className="text-xs line-clamp-2">
             {truncatePrompt(prompt.prompt)}
           </p>
-          <p className="text-[10px] text-muted-foreground/60 mt-1">
+          <p className="text-[10px] text-muted-foreground mt-1">
             {formatDate(prompt.created_at)}
           </p>
         </div>
@@ -63,7 +63,7 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
             onDelete(prompt._id)
           }}
         >
-          <Trash2 className="h-3 w-3 text-destructive" />
+          <Trash2 className="h-3 w-3 text-destructive hover:bg-destructive/20" />
         </Button>
       </div>
 

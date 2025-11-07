@@ -75,7 +75,7 @@ const SidebarHeader = ({ onLogoClick }: { onLogoClick: () => void }) => (
     <div className="-translate-x-1 rotate-45 transition-transform duration-1000 hover:rotate-[405deg]">
       <Icon type="gemini" size="xs" />
     </div>
-    <span className="text-s font-semibold text-white">IntelliChat</span>
+    <span className="text-s font-semibold text-foreground">IntelliChat</span>
   </button>
 )
 
@@ -98,7 +98,7 @@ const NewChatButton = ({
 )
 
 const ModelDisplay = ({ model }: { model: string }) => (
-  <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted">
+  <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase">
     {(() => {
       const icon = getProviderIcon(model)
       return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null
@@ -178,7 +178,7 @@ const Endpoint = () => {
             value={endpointValue}
             onChange={(e) => setEndpointValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex h-9 w-full items-center text-ellipsis rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium text-muted"
+            className="flex h-9 w-full items-center text-ellipsis rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium"
             autoFocus
           />
           <Button
@@ -222,7 +222,7 @@ const Endpoint = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="text-xs font-medium text-muted">
+                  <p className="text-xs font-medium text-primary/80">
                     {isMounted
                       ? truncateText(selectedEndpoint, 21) ||
                         API_URL

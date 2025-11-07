@@ -130,7 +130,7 @@ const ChatInput = () => {
           {selectedFiles.map((file, index) => (
             <div
               key={index}
-              className="border-accent bg-primaryAccent text-primary flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs"
+              className="border-accent text-primary flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs"
             >
               <span className="max-w-[200px] truncate">{file.name}</span>
               <button
@@ -146,14 +146,14 @@ const ChatInput = () => {
       )}
 
       {/* Input Area */}
-      <div className="flex items-end justify-center gap-x-2 rounded-2xl bg-zinc-800 p-2">
+      <div className="flex items-end justify-center gap-x-2 rounded-2xl bg-accent p-2">
         {/* File Upload Button */}
         <Button
           onClick={() => fileInputRef.current?.click()}
           disabled={!(selectedAgent || teamId) || isStreaming}
           size="icon"
           variant="ghost"
-          className="bg-primaryAccent/70 text-primary hover:border-accent hover:bg-[black] hover:rounded-xl rounded-3xl p-5 transition-all"
+          className="bg-background-secondary hover:border-accent hover:bg-background hover:rounded-xl rounded-3xl p-5 transition-all"
           type="button"
         >
           <Icon type="paperclip" color="primary" />
@@ -182,7 +182,7 @@ const ChatInput = () => {
               handleSubmit()
             }
           }}
-          className="border-accent bg-primaryAccent text-primary focus:border-accent w-full border px-4 text-sm"
+          className="bg-background focus:border-accent w-full border px-4 text-sm"
           disabled={!(selectedAgent || teamId)}
           ref={chatInputRef}
         />
@@ -193,7 +193,7 @@ const ChatInput = () => {
             (!isStreaming && !inputMessage.trim() && selectedFiles.length === 0)
           }
           size="icon"
-          className="bg-primary text-primaryAccent hover:bg-primary/90 rounded-xl p-5 transition-all"
+          className="hover:bg-primary/90 rounded-xl p-5 transition-all"
         >
           {isStreaming ? (
             <StopIcon className="text-primaryAccent" width={20} height={20} />

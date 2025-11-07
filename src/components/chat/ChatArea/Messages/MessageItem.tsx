@@ -152,8 +152,8 @@ const UserMessage = memo(({ message }: MessageProps) => {
     <div className="group flex items-start justify-end gap-4 pt-4 max-md:break-words">
       <div className="flex flex-col items-end gap-2">
         <div className="relative max-w-[500px]">
-          <div className="rounded-tl-3xl rounded-bl-3xl rounded-br-3xl bg-[purple]/20 p-2">
-            <div className="scrollbar-hide font-geist text-secondary max-h-[250px] overflow-y-auto rounded-tl-2xl rounded-bl-2xl rounded-br-2xl bg-[purple]/20 px-3 py-2 text-start text-sm backdrop-blur-sm">
+          <div className="rounded-tl-3xl rounded-bl-3xl rounded-br-3xl bg-[purple]/50 p-2">
+            <div className="scrollbar-hide font-geist text-primary max-h-[250px] overflow-y-auto rounded-tl-2xl rounded-bl-2xl rounded-br-2xl bg-[purple]/80 px-3 py-2 text-start text-sm backdrop-blur-sm">
               {message.content}
             </div>
           </div>

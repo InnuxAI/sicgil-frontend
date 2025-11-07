@@ -19,30 +19,30 @@ const getLanguageFromClassName = (className?: string): string => {
   return match ? match[1] : 'text'
 }
 
-// Language display names with color coding
+// Language display names with color coding using theme colors
 const languageConfig: Record<string, { label: string; color: string }> = {
-  javascript: { label: 'JavaScript', color: 'bg-yellow-500/20 text-yellow-500' },
-  typescript: { label: 'TypeScript', color: 'bg-blue-500/20 text-blue-500' },
-  python: { label: 'Python', color: 'bg-blue-400/20 text-blue-400' },
-  java: { label: 'Java', color: 'bg-orange-500/20 text-orange-500' },
-  cpp: { label: 'C++', color: 'bg-pink-500/20 text-pink-500' },
-  c: { label: 'C', color: 'bg-blue-600/20 text-blue-600' },
-  csharp: { label: 'C#', color: 'bg-purple-500/20 text-purple-500' },
-  go: { label: 'Go', color: 'bg-cyan-500/20 text-cyan-500' },
-  rust: { label: 'Rust', color: 'bg-orange-600/20 text-orange-600' },
-  php: { label: 'PHP', color: 'bg-indigo-500/20 text-indigo-500' },
-  ruby: { label: 'Ruby', color: 'bg-red-500/20 text-red-500' },
-  swift: { label: 'Swift', color: 'bg-orange-400/20 text-orange-400' },
-  kotlin: { label: 'Kotlin', color: 'bg-purple-400/20 text-purple-400' },
-  bash: { label: 'Bash', color: 'bg-green-500/20 text-green-500' },
-  shell: { label: 'Shell', color: 'bg-green-500/20 text-green-500' },
-  sql: { label: 'SQL', color: 'bg-blue-300/20 text-blue-300' },
-  json: { label: 'JSON', color: 'bg-gray-500/20 text-gray-400' },
-  yaml: { label: 'YAML', color: 'bg-red-400/20 text-red-400' },
-  html: { label: 'HTML', color: 'bg-orange-500/20 text-orange-500' },
-  css: { label: 'CSS', color: 'bg-blue-500/20 text-blue-500' },
-  markdown: { label: 'Markdown', color: 'bg-gray-500/20 text-gray-400' },
-  text: { label: 'Plain Text', color: 'bg-gray-500/20 text-gray-400' }
+  javascript: { label: 'JavaScript', color: 'bg-brand/20 text-brand' },
+  typescript: { label: 'TypeScript', color: 'bg-primary-accent/20 text-primary-accent' },
+  python: { label: 'Python', color: 'bg-primary-accent/30 text-primary-accent' },
+  java: { label: 'Java', color: 'bg-brand/30 text-brand' },
+  cpp: { label: 'C++', color: 'bg-accent/20 text-accent-foreground' },
+  c: { label: 'C', color: 'bg-primary-accent/40 text-primary-accent' },
+  csharp: { label: 'C#', color: 'bg-accent/30 text-accent-foreground' },
+  go: { label: 'Go', color: 'bg-primary-accent/20 text-primary-accent' },
+  rust: { label: 'Rust', color: 'bg-brand/25 text-brand' },
+  php: { label: 'PHP', color: 'bg-accent/25 text-accent-foreground' },
+  ruby: { label: 'Ruby', color: 'bg-destructive/20 text-destructive' },
+  swift: { label: 'Swift', color: 'bg-brand/30 text-brand' },
+  kotlin: { label: 'Kotlin', color: 'bg-accent/20 text-accent-foreground' },
+  bash: { label: 'Bash', color: 'bg-positive/20 text-positive' },
+  shell: { label: 'Shell', color: 'bg-positive/20 text-positive' },
+  sql: { label: 'SQL', color: 'bg-primary-accent/25 text-primary-accent' },
+  json: { label: 'JSON', color: 'bg-muted/20 text-muted-foreground' },
+  yaml: { label: 'YAML', color: 'bg-destructive/25 text-destructive' },
+  html: { label: 'HTML', color: 'bg-brand/20 text-brand' },
+  css: { label: 'CSS', color: 'bg-primary-accent/20 text-primary-accent' },
+  markdown: { label: 'Markdown', color: 'bg-muted/20 text-muted-foreground' },
+  text: { label: 'Plain Text', color: 'bg-muted/20 text-muted-foreground' }
 }
 
 const CodeBlock: FC<CodeBlockProps> = ({ children, className, inline }) => {
@@ -67,7 +67,7 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, className, inline }) => {
 
   // Block code with syntax highlighting
   return (
-    <div className="group relative my-4 overflow-hidden rounded-lg border border-accent/30 bg-[#1e1e1e]">
+    <div className="group relative my-4 overflow-hidden rounded-lg border border-accent/30 bg-background-secondary">
       {/* Header with language badge and copy button */}
       <div className="flex items-center justify-between border-b border-accent/30 bg-background-secondary/30 px-4 py-2">
         <span

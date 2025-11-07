@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/store";
 import { useQueryState } from "nuqs";
+import { useTheme } from "next-themes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,12 +13,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import Icon from "@/components/ui/icon";
+import { Moon, Sun, Monitor } from "lucide-react";
 
 export default function UserProfile() {
   const { user, isLoading, signOut } = useAuth();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
   const clearUserState = useStore((state) => state.clearUserState);
   const [, setAgentId] = useQueryState('agent');
   const [, setTeamId] = useQueryState('team');
@@ -96,6 +102,33 @@ export default function UserProfile() {
           <Icon type="check" size="xs" className="mr-2" />
           <span>Notifications</span>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            {theme === 'dark' ? (
+              <Moon className="mr-2 h-4 w-4" />
+            ) : theme === 'light' ? (
+              <Sun className="mr-2 h-4 w-4" />
+            ) : (
+              <Monitor className="mr-2 h-4 w-4" />
+            )}
+            <span>Theme</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem onClick={() => setTheme('light')}>
+              <Sun className="mr-2 h-4 w-4" />
+              <span>Light</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')}>
+              <Moon className="mr-2 h-4 w-4" />
+              <span>Dark</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('system')}>
+              <Monitor className="mr-2 h-4 w-4" />
+              <span>System</span>
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600">
           <Icon type="x" size="xs" className="mr-2" />

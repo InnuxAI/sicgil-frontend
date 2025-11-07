@@ -181,7 +181,7 @@ const ToolCallsContainer = memo(({ toolCalls }: ToolCallsContainerProps) => {
           type="hammer"
           className="rounded-lg bg-background-secondary p-1"
           size="sm"
-          color="secondary"
+          color="primary  "
         />
       </div>
 

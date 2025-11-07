@@ -102,8 +102,8 @@ const EnhancedReferenceCard = memo(({
             <div className="p-3 space-y-3">
               {/* Original Query */}
               {query && (
-                <div className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-2.5">
-                  <p className="text-xs font-semibold mb-1.5 text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
+                <div className="rounded-lg bg-primary-accent/10 border border-primary-accent/20 p-2.5">
+                  <p className="text-xs font-semibold mb-1.5 text-primary-accent flex items-center gap-1.5">
                     <Search className="h-3 w-3" />
                     Query:
                   </p>

@@ -94,8 +94,8 @@ const SessionItem = ({
         className={cn(
           'group flex h-11 w-full items-center justify-between rounded-lg px-3 py-2 transition-colors duration-200',
           isSelected
-            ? 'cursor-default bg-primary/10'
-            : 'cursor-pointer bg-background-secondary hover:bg-background-secondary/80'
+            ? 'cursor-default bg-[purple]/60'
+            : 'cursor-pointer bg-background-secondary hover:bg-background-secondary/40'
         )}
         onClick={handleGetSession}
       >
@@ -115,7 +115,7 @@ const SessionItem = ({
             setIsDeleteModalOpen(true)
           }}
         >
-          <Icon type="trash" size="xs" />
+          <Icon type="trash" size="xs" className="hover:bg-destructive/20 text-destructive" />
         </Button>
       </div>
       <DeleteSessionModal
