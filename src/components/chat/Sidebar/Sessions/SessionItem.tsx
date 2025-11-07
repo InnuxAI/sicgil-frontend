@@ -19,7 +19,7 @@ type SessionItemProps = SessionEntry & {
 const SessionItem = ({
   session_name: title,
   session_id,
-  summary,
+  summary: summary,
   isSelected,
   currentSessionId,
   onSessionClick
@@ -35,8 +35,8 @@ const SessionItem = ({
   const [isDeleting, setIsDeleting] = useState(false)
   const { clearChat } = useChatActions()
 
-  // Use summary title if available, otherwise fall back to session_name
-  const displayTitle = summary?.title || title
+  // Use summary text if available, otherwise fall back to session_name
+  const displayTitle = summary?.summary || title
 
   const handleGetSession = async () => {
     if (!(agentId || teamId || dbId)) return

@@ -5,6 +5,7 @@ import { FC, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import CodeBlock from '../CodeBlock'
 
 import type {
   UnorderedListProps,
@@ -121,9 +122,21 @@ const HorizontalRule = ({ className, ...props }: HorizontalRuleProps) => (
   />
 )
 
-const InlineCode: FC<PreparedTextProps> = ({ children }) => {
+const InlineCode: FC<PreparedTextProps> = ({ children, className, ...props }) => {
+  // Check if this is a code block (has className with language) or inline code
+  const isCodeBlock = className && className.startsWith('language-')
+  
+  if (isCodeBlock) {
+    return (
+      <CodeBlock className={className} inline={false}>
+        {String(children).replace(/\n$/, '')}
+      </CodeBlock>
+    )
+  }
+
+  // Inline code
   return (
-    <code className="relative whitespace-pre-wrap rounded-sm bg-background-secondary/50 p-1">
+    <code className="relative whitespace-pre-wrap rounded-sm bg-background-secondary/50 px-1.5 py-0.5 font-mono text-xs">
       {children}
     </code>
   )
@@ -253,6 +266,26 @@ const TableCell = ({ className, ...props }: TableCellProps) => (
   />
 )
 
+// Pre component to handle code blocks
+const Pre: FC<any> = ({ children, ...props }) => {
+  // Extract code element from pre tag
+  const codeElement = children?.props
+  
+  if (codeElement) {
+    return (
+      <CodeBlock 
+        className={codeElement.className} 
+        inline={false}
+      >
+        {String(codeElement.children).replace(/\n$/, '')}
+      </CodeBlock>
+    )
+  }
+  
+  // Fallback for non-code pre blocks
+  return <pre {...props}>{children}</pre>
+}
+
 export const components = {
   h1: Heading1,
   h2: Heading2,
@@ -271,6 +304,7 @@ export const components = {
   hr: HorizontalRule,
   blockquote: Blockquote,
   code: InlineCode,
+  pre: Pre,
   a: AnchorLink,
   img: Img,
   p: Paragraph,

@@ -194,7 +194,7 @@ export default function SignUpPage() {
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
 
-            <div className="relative">
+            {/* <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border" />
               </div>
@@ -230,7 +230,7 @@ export default function SignUpPage() {
                 </svg>
                 Continue with Apple
               </Button>
-            </div>
+            </div> */}
 
             <div className="text-center text-sm">
               <span className="text-muted-foreground">Already have an Account? </span>

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { getSessionAPI, getAllSessionsAPI } from '@/api/os'
+import { getSessionAPI, getAllSessionsAPI, getSessionSummariesAPI } from '@/api/os'
 import { useStore } from '../store'
 import { toast } from 'sonner'
 import { ChatMessage, ToolCall, ReasoningMessage, ChatEntry } from '@/types/os'
@@ -49,7 +49,31 @@ const useSessionLoader = () => {
           authToken,
           user?.id  // CRITICAL: Pass user_id to filter sessions
         )
-        setSessionsData(sessions.data ?? [])
+        
+        if (sessions.data && sessions.data.length > 0) {
+          // Fetch summaries for all sessions
+          try {
+            const sessionIds = sessions.data.map(s => s.session_id)
+            const summaries = await getSessionSummariesAPI(
+              selectedEndpoint,
+              sessionIds,
+              dbId,
+              authToken
+            )
+            
+            // Merge summaries into session data
+            const sessionsWithSummaries = sessions.data.map(session => ({
+              ...session,
+              summary: summaries[session.session_id]
+            }))
+            
+            setSessionsData(sessionsWithSummaries)
+          } catch (error) {
+            setSessionsData(sessions.data ?? [])
+          }
+        } else {
+          setSessionsData(sessions.data ?? [])
+        }
       } catch {
         toast.error('Error loading sessions')
         setSessionsData([])

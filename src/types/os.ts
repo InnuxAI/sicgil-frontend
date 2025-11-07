@@ -274,8 +274,9 @@ export interface Reference {
 }
 
 export interface SessionSummary {
-  title?: string
   summary?: string
+  topics?: string[]
+  updated_at?: string
 }
 
 export interface SessionEntry {

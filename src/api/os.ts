@@ -116,6 +116,62 @@ export const getSessionAPI = async (
   return response.json()
 }
 
+export const getSessionDetailsAPI = async (
+  base: string,
+  sessionId: string,
+  dbId?: string,
+  authToken?: string
+) => {
+  // Try to get full session document (not just runs)
+  const queryParams = new URLSearchParams()
+  if (dbId) queryParams.append('db_id', dbId)
+  
+  const response = await fetch(
+    `${base}/sessions/${sessionId}?${queryParams.toString()}`,
+    {
+      method: 'GET',
+      headers: createHeaders(authToken)
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch session details: ${response.statusText}`)
+  }
+
+  return response.json()
+}
+
+export const getSessionSummariesAPI = async (
+  base: string,
+  sessionIds: string[],
+  dbId: string,
+  authToken?: string
+): Promise<Record<string, { summary?: string; topics?: string[]; updated_at?: string }>> => {
+  try {
+    const response = await fetch(
+      `${base}/sessions/summaries`,
+      {
+        method: 'POST',
+        headers: createHeaders(authToken),
+        body: JSON.stringify({
+          session_ids: sessionIds,
+          db_id: dbId
+        })
+      }
+    )
+
+    if (!response.ok) {
+      console.error('Failed to fetch session summaries:', response.statusText)
+      return {}
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching session summaries:', error)
+    return {}
+  }
+}
+
 export const deleteSessionAPI = async (
   base: string,
   dbId: string,

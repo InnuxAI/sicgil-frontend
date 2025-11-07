@@ -155,7 +155,7 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
 
-            <div className="relative">
+            {/* <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border" />
               </div>
@@ -191,7 +191,7 @@ export default function LoginPage() {
                 </svg>
                 Continue with Apple
               </Button>
-            </div>
+            </div> */}
 
             <div className="text-center text-sm">
               <span className="text-muted-foreground">Don&apos;t have an Account? </span>
