@@ -314,7 +314,7 @@ const Sidebar = ({
         />
       </motion.button>
       <motion.div
-        className="w-60 space-y-5"
+        className="flex flex-col h-full w-60"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -20 : 0 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -322,69 +322,74 @@ const Sidebar = ({
           pointerEvents: isCollapsed ? 'none' : 'auto'
         }}
       >
-        <SidebarHeader onLogoClick={handleLogoClick} />
-        <NewChatButton
-          disabled={messages.length === 0}
-          onClick={handleNewChat}
-        />
-        {isMounted && (
-          <>
-            <CollapsibleSection title="Server" defaultOpen={false}>
-              <Endpoint />
-            </CollapsibleSection>
-            <CollapsibleSection title="Auth Token" defaultOpen={false}>
-              <AuthToken hasEnvToken={hasEnvToken} envToken={envToken} />
-            </CollapsibleSection>
-            {isEndpointActive && (
-              <>
-                <CollapsibleSection title="Mode" defaultOpen={false}>
-                  <motion.div
-                    className="flex w-full flex-col items-start gap-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                  >
-                    {isEndpointLoading ? (
-                      <div className="flex w-full flex-col gap-2">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                          <Skeleton
-                            key={index}
-                            className="h-9 w-full rounded-xl"
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <>
-                        <ModeSelector />
-                        <EntitySelector />
-                        {selectedModel && (agentId || teamId) && (
-                          <ModelDisplay model={selectedModel} />
-                        )}
-                      </>
-                    )}
-                  </motion.div>
-                </CollapsibleSection>
-                <Tabs defaultValue="sessions" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-2">
-                    <TabsTrigger value="sessions" className="text-xs">
-                      Sessions
-                    </TabsTrigger>
-                    <TabsTrigger value="library" className="text-xs">
-                      Library
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="sessions" className="mt-0">
-                    <Sessions />
-                  </TabsContent>
-                  <TabsContent value="library" className="mt-0">
-                    <Library />
-                  </TabsContent>
-                </Tabs>
-              </>
-            )}
-          </>
-        )}
-        <div className="mt-auto">
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-5 pb-4 scrollbar-thin">
+          <SidebarHeader onLogoClick={handleLogoClick} />
+          <NewChatButton
+            disabled={messages.length === 0}
+            onClick={handleNewChat}
+          />
+          {isMounted && (
+            <>
+              <CollapsibleSection title="Server" defaultOpen={false}>
+                <Endpoint />
+              </CollapsibleSection>
+              <CollapsibleSection title="Auth Token" defaultOpen={false}>
+                <AuthToken hasEnvToken={hasEnvToken} envToken={envToken} />
+              </CollapsibleSection>
+              {isEndpointActive && (
+                <>
+                  <CollapsibleSection title="Mode" defaultOpen={false}>
+                    <motion.div
+                      className="flex w-full flex-col items-start gap-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    >
+                      {isEndpointLoading ? (
+                        <div className="flex w-full flex-col gap-2">
+                          {Array.from({ length: 3 }).map((_, index) => (
+                            <Skeleton
+                              key={index}
+                              className="h-9 w-full rounded-xl"
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <>
+                          <ModeSelector />
+                          <EntitySelector />
+                          {selectedModel && (agentId || teamId) && (
+                            <ModelDisplay model={selectedModel} />
+                          )}
+                        </>
+                      )}
+                    </motion.div>
+                  </CollapsibleSection>
+                  <Tabs defaultValue="sessions" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-2">
+                      <TabsTrigger value="sessions" className="text-xs">
+                        Sessions
+                      </TabsTrigger>
+                      <TabsTrigger value="library" className="text-xs">
+                        Library
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="sessions" className="mt-0">
+                      <Sessions />
+                    </TabsContent>
+                    <TabsContent value="library" className="mt-0">
+                      <Library />
+                    </TabsContent>
+                  </Tabs>
+                </>
+              )}
+            </>
+          )}
+        </div>
+        
+        {/* Fixed footer with UserProfile */}
+        <div className="shrink-0 border-t border-border/50 pt-4">
           <UserProfile />
         </div>
       </motion.div>

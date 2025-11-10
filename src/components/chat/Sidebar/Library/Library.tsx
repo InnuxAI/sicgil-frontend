@@ -44,7 +44,6 @@ const Library = () => {
   const { user } = useAuth()
   const [prompts, setPrompts] = useState<SavedPrompt[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isScrolling, setIsScrolling] = useState(false)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const fetchPrompts = useCallback(async () => {
@@ -83,14 +82,12 @@ const Library = () => {
   }, [fetchPrompts])
 
   const handleScroll = () => {
-    setIsScrolling(true)
-
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current)
     }
 
     scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false)
+      // Scroll ended
     }, 1500)
   }
 
@@ -139,13 +136,8 @@ const Library = () => {
   return (
     <div className="w-full">
       <div
-        className={`h-[calc(100vh-345px)] overflow-y-auto font-geist transition-all duration-300 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300 ${
-          isScrolling
-            ? '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-background [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:opacity-0'
-            : '[&::-webkit-scrollbar]:opacity-100'
-        }`}
+        className={`h-[calc(100vh-345px)] overflow-y-auto font-geist transition-all duration-300 scrollbar-thin`}
         onScroll={handleScroll}
-        onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={handleScroll}
       >
         {prompts.length === 0 ? (

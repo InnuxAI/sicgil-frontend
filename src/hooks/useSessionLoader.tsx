@@ -68,7 +68,7 @@ const useSessionLoader = () => {
             }))
             
             setSessionsData(sessionsWithSummaries)
-          } catch (error) {
+          } catch {
             setSessionsData(sessions.data ?? [])
           }
         } else {

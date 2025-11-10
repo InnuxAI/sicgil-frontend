@@ -1,6 +1,6 @@
 import { memo, useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, Hammer, X } from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
 import Icon from '@/components/ui/icon'
 import { ToolCall } from '@/types/os'
 import { useStore } from '@/store'

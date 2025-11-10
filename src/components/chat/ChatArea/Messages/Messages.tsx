@@ -1,8 +1,6 @@
 import type { ChatMessage } from '@/types/os'
 
 import { AgentMessage, UserMessage } from './MessageItem'
-import Tooltip from '@/components/ui/tooltip'
-import { memo } from 'react'
 import {
   ReferenceData
 } from '@/types/os'
@@ -113,13 +111,7 @@ const AgentMessageWrapper = ({ message, messageIndex }: MessageWrapperProps) => 
       {message.extra_data?.reasoning_steps &&
         message.extra_data.reasoning_steps.length > 0 && (
           <div className="flex items-start gap-4">
-            <Tooltip
-              delayDuration={0}
-              content={<p className="text-accent">Reasoning</p>}
-              side="top"
-            >
-              <Icon type="reasoning" size="sm" />
-            </Tooltip>
+            <Icon type="reasoning" size="sm" />
             <div className="flex flex-col gap-3">
               <p className="text-xs uppercase text-primary/80">Reasoning</p>
               <div className="flex flex-col gap-2">
@@ -137,13 +129,7 @@ const AgentMessageWrapper = ({ message, messageIndex }: MessageWrapperProps) => 
       {message.extra_data?.references &&
         message.extra_data.references.length > 0 && (
           <div className="flex items-start gap-4 w-full">
-            <Tooltip
-              delayDuration={0}
-              content={<p className="text-accent">References</p>}
-              side="top"
-            >
-              <Icon type="references" size="sm" className="mt-1" />
-            </Tooltip>
+            <Icon type="references" size="sm" className="mt-1" />
             <div className="flex flex-col gap-3 flex-1 min-w-0">
               <p className="text-xs uppercase text-primary/80">References</p>
               <References references={message.extra_data.references} />

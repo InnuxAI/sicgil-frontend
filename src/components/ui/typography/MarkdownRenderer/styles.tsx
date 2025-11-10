@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useState, isValidElement } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -122,7 +122,7 @@ const HorizontalRule = ({ className, ...props }: HorizontalRuleProps) => (
   />
 )
 
-const InlineCode: FC<PreparedTextProps> = ({ children, className, ...props }) => {
+const InlineCode: FC<PreparedTextProps> = ({ children, className }) => {
   // Check if this is a code block (has className with language) or inline code
   const isCodeBlock = className && className.startsWith('language-')
   
@@ -267,23 +267,23 @@ const TableCell = ({ className, ...props }: TableCellProps) => (
 )
 
 // Pre component to handle code blocks
-const Pre: FC<any> = ({ children, ...props }) => {
+const Pre: FC<{ children?: React.ReactNode }> = ({ children }) => {
   // Extract code element from pre tag
-  const codeElement = children?.props
+  const codeElement = isValidElement(children) ? (children.props as { className?: string; children?: React.ReactNode }) : null
   
-  if (codeElement) {
+  if (codeElement && codeElement.className) {
     return (
       <CodeBlock 
         className={codeElement.className} 
         inline={false}
       >
-        {String(codeElement.children).replace(/\n$/, '')}
+        {String(codeElement.children || '').replace(/\n$/, '')}
       </CodeBlock>
     )
   }
   
   // Fallback for non-code pre blocks
-  return <pre {...props}>{children}</pre>
+  return <pre>{children}</pre>
 }
 
 export const components = {
