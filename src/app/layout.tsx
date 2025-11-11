@@ -4,6 +4,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/lib/auth/AuthContext'
 import { ThemeProvider } from '@/components/theme-provider'
+import { CommandMenu } from '@/components/CommandMenu'
 import './globals.css'
 import AppShell from '@/components/AppShell'
 
@@ -49,6 +50,7 @@ export default function RootLayout({
                 {children}
               </AppShell>
             </NuqsAdapter>
+            <CommandMenu />
           </AuthProvider>
           <Toaster />
         </ThemeProvider>

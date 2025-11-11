@@ -17,8 +17,16 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import Icon from "@/components/ui/icon";
-import { Moon, Sun, Monitor } from "lucide-react";
+import { 
+  Moon, 
+  Sun, 
+  Monitor, 
+  ChevronUp, 
+  User, 
+  CreditCard, 
+  Bell, 
+  LogOut 
+} from "lucide-react";
 
 export default function UserProfile() {
   const { user, isLoading, signOut } = useAuth();
@@ -78,22 +86,22 @@ export default function UserProfile() {
               {user.email}
             </div>
           </div>
-          <Icon type="chevron-up" size="xs" className="text-muted-foreground" />
+          <ChevronUp className="h-4 w-4 text-muted-foreground" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side="right" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Icon type="user" size="xs" className="mr-2" />
+          <User className="mr-2 h-4 w-4" />
           <span>Account</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Icon type="sheet" size="xs" className="mr-2" />
+          <CreditCard className="mr-2 h-4 w-4" />
           <span>Billing</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Icon type="check" size="xs" className="mr-2" />
+          <Bell className="mr-2 h-4 w-4" />
           <span>Notifications</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -125,7 +133,7 @@ export default function UserProfile() {
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600">
-          <Icon type="x" size="xs" className="mr-2" />
+          <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
