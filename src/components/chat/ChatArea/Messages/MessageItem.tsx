@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { RotateCcw, Bookmark } from 'lucide-react'
 import { toast } from 'sonner'
 import { authService } from '@/lib/auth/service'
+import FileAttachmentBadge from '@/components/ui/FileAttachmentBadge/FileAttachmentBadge'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777"
 
@@ -161,15 +162,11 @@ const UserMessage = memo(({ message }: MessageProps) => {
         {message.attachments && message.attachments.length > 0 && (
           <div className="flex flex-wrap justify-end gap-2">
             {message.attachments.map((attachment, index) => (
-              <div
+              <FileAttachmentBadge
                 key={index}
-                className="border-accent/50 bg-primaryAccent/30 text-primary/80 flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs"
-              >
-                <Icon type="paperclip" size="xxs" />
-                <span className="max-w-[200px] truncate">
-                  {attachment.name}
-                </span>
-              </div>
+                fileName={attachment.name}
+                fileType={attachment.type}
+              />
             ))}
           </div>
         )}

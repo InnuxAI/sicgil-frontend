@@ -10,6 +10,7 @@ import Icon from '@/components/ui/icon'
 import { cancelAgentRunAPI, cancelTeamRunAPI } from '@/api/os'
 import { constructEndpointUrl } from '@/lib/constructEndpointUrl'
 import StopIcon from '@/components/ui/StopIcon'
+import FileAttachmentBadge from '@/components/ui/FileAttachmentBadge/FileAttachmentBadge'
 
 const ChatInput = () => {
   const { chatInputRef } = useStore()
@@ -128,19 +129,12 @@ const ChatInput = () => {
       {selectedFiles.length > 0 && (
         <div className="mb-2 flex flex-wrap gap-2">
           {selectedFiles.map((file, index) => (
-            <div
+            <FileAttachmentBadge
               key={index}
-              className="border-accent text-primary flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs"
-            >
-              <span className="max-w-[200px] truncate">{file.name}</span>
-              <button
-                onClick={() => handleRemoveFile(index)}
-                className="text-primary/60 hover:text-primary"
-                type="button"
-              >
-                ×
-              </button>
-            </div>
+              fileName={file.name}
+              fileType={file.type}
+              onRemove={() => handleRemoveFile(index)}
+            />
           ))}
         </div>
       )}
