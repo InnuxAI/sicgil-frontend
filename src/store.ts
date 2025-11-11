@@ -7,6 +7,7 @@ import {
   TeamDetails,
   type ChatMessage
 } from '@/types/os'
+import { listContainerFilesAPI, BlobFileMetadata } from '@/api/os'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777";
 
@@ -65,6 +66,14 @@ interface Store {
   currentRunId: string | null
   setCurrentRunId: (runId: string | null) => void
   clearUserState: () => void  // Clear all user-specific state on logout
+  // File mention state
+  blobFiles: BlobFileMetadata[]
+  setBlobFiles: (files: BlobFileMetadata[]) => void
+  isFetchingBlobFiles: boolean
+  setIsFetchingBlobFiles: (isFetching: boolean) => void
+  lastBlobFetchTime: number | null
+  setLastBlobFetchTime: (time: number | null) => void
+  fetchBlobFiles: () => Promise<void>
 }
 
 export const useStore = create<Store>()(
@@ -124,6 +133,40 @@ export const useStore = create<Store>()(
         set(() => ({ isSessionsLoading })),
       currentRunId: null,
       setCurrentRunId: (runId) => set(() => ({ currentRunId: runId })),
+      // File mention state
+      blobFiles: [],
+      setBlobFiles: (files) => set(() => ({ blobFiles: files })),
+      isFetchingBlobFiles: false,
+      setIsFetchingBlobFiles: (isFetching) => set(() => ({ isFetchingBlobFiles: isFetching })),
+      lastBlobFetchTime: null,
+      setLastBlobFetchTime: (time) => set(() => ({ lastBlobFetchTime: time })),
+      fetchBlobFiles: async () => {
+        const state = useStore.getState()
+        
+        // Prevent concurrent fetches
+        if (state.isFetchingBlobFiles) {
+          return
+        }
+        
+        state.setIsFetchingBlobFiles(true)
+        
+        try {
+          const response = await listContainerFilesAPI(
+            state.selectedEndpoint,
+            'filescontainer',
+            state.authToken
+          )
+          
+          if (response && response.success) {
+            state.setBlobFiles(response.files)
+            state.setLastBlobFetchTime(Date.now())
+          }
+        } catch (error) {
+          console.error('Error fetching blob files:', error)
+        } finally {
+          state.setIsFetchingBlobFiles(false)
+        }
+      },
       clearUserState: () =>
         set(() => ({
           messages: [],
@@ -136,7 +179,9 @@ export const useStore = create<Store>()(
           selectedDbId: null,
           currentRunId: null,
           isStreaming: false,
-          streamingErrorMessage: ''
+          streamingErrorMessage: '',
+          blobFiles: [],
+          lastBlobFetchTime: null
         }))
     }),
     {

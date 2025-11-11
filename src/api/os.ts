@@ -302,3 +302,144 @@ export const getBlobUrlAPI = async (
     return null
   }
 }
+
+export interface BlobFileMetadata {
+  name: string
+  size: number
+  content_type: string
+  last_modified: string | null
+}
+
+export interface ListContainerFilesResponse {
+  success: boolean
+  container: string
+  files: BlobFileMetadata[]
+  count: number
+  timestamp: string
+}
+
+/**
+ * List all files in a blob storage container (for file mention feature)
+ * @param agentOSUrl - Base endpoint URL
+ * @param containerName - Container name (e.g., 'filescontainer')
+ * @param authToken - Optional auth token
+ * @returns List of file metadata
+ */
+export const listContainerFilesAPI = async (
+  agentOSUrl: string,
+  containerName: string,
+  authToken?: string
+): Promise<ListContainerFilesResponse | null> => {
+  try {
+    const url = APIRoutes.ListContainerFiles(agentOSUrl, containerName)
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: createHeaders(authToken),
+      credentials: 'include' // Include cookies for auth
+    })
+
+    if (!response.ok) {
+      console.error(`Failed to list container files: ${response.statusText}`)
+      return null
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error listing container files:', error)
+    return null
+  }
+}
+
+export interface DownloadedFile {
+  blob_name: string
+  local_path: string
+  filename: string
+}
+
+export interface DownloadBlobFilesResponse {
+  success: boolean
+  downloaded_files: DownloadedFile[]
+  count: number
+}
+
+/**
+ * Download blob files from Azure to local excel_files folder
+ * Called BEFORE agent run to prepare files
+ * @param agentOSUrl - Base endpoint URL
+ * @param blobNames - Array of blob names to download
+ * @param containerName - Container name (default: 'filescontainer')
+ * @param authToken - Optional auth token
+ * @returns Download results with local file paths
+ */
+export const downloadBlobFilesAPI = async (
+  agentOSUrl: string,
+  blobNames: string[],
+  containerName: string = 'filescontainer',
+  authToken?: string
+): Promise<DownloadBlobFilesResponse | null> => {
+  try {
+    const url = APIRoutes.DownloadBlobFiles(agentOSUrl)
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: createHeaders(authToken),
+      credentials: 'include',
+      body: JSON.stringify({ blob_names: blobNames, container: containerName })
+    })
+
+    if (!response.ok) {
+      console.error(`Failed to download blob files: ${response.statusText}`)
+      return null
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error downloading blob files:', error)
+    return null
+  }
+}
+
+export interface CleanupFilesResponse {
+  success: boolean
+  deleted_count: number
+  requested_count: number
+}
+
+/**
+ * Cleanup downloaded files from excel_files folder
+ * Called AFTER agent run completes
+ * @param agentOSUrl - Base endpoint URL
+ * @param filenames - Array of filenames to delete
+ * @param authToken - Optional auth token
+ * @returns Cleanup results
+ */
+export const cleanupFilesAPI = async (
+  agentOSUrl: string,
+  filenames: string[],
+  authToken?: string
+): Promise<CleanupFilesResponse | null> => {
+  try {
+    const url = APIRoutes.CleanupFiles(agentOSUrl)
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: createHeaders(authToken),
+      credentials: 'include',
+      body: JSON.stringify({ filenames })
+    })
+
+    if (!response.ok) {
+      console.error(`Failed to cleanup files: ${response.statusText}`)
+      return null
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error cleaning up files:', error)
+    return null
+  }
+}

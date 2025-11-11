@@ -21,5 +21,15 @@ export const APIRoutes = {
   
   // Blob storage routes
   GetBlobUrl: (agentOSUrl: string, blobName: string, expiryHours: number = 24) =>
-    `${agentOSUrl}/api/blobs/${encodeURIComponent(blobName)}/url?expiry_hours=${expiryHours}`
+    `${agentOSUrl}/api/blobs/${encodeURIComponent(blobName)}/url?expiry_hours=${expiryHours}`,
+  
+  // File mention routes
+  ListContainerFiles: (agentOSUrl: string, containerName: string) =>
+    `${agentOSUrl}/api/blobs/containers/${encodeURIComponent(containerName)}/files`,
+  
+  // Blob file download and cleanup
+  DownloadBlobFiles: (agentOSUrl: string) =>
+    `${agentOSUrl}/api/blobs/download`,
+  CleanupFiles: (agentOSUrl: string) =>
+    `${agentOSUrl}/api/files/cleanup`
 }
