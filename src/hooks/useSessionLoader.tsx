@@ -16,6 +16,16 @@ interface SessionResponse {
     chats?: ChatEntry[]
   }
   agent_data: Record<string, unknown>
+  input?: {
+    input_content?: string
+    files?: Array<{
+      id: string
+      filename: string
+      mime_type: string
+      format: string
+      content: string
+    }>
+  }
 }
 
 interface LoaderArgs {
@@ -109,14 +119,51 @@ const useSessionLoader = () => {
         )
         if (response) {
           if (Array.isArray(response)) {
-            const messagesFor = response.flatMap((run) => {
+            const messagesFor = response.flatMap((run: any) => {
               const filteredMessages: ChatMessage[] = []
 
               if (run) {
+                // Get user content from input or find current user message (not from_history)
+                let userContent = run.input?.input_content || run.run_input || ''
+                let attachments: any = undefined
+                
+                // Try to get files from the current user message in messages array
+                if (run.messages && Array.isArray(run.messages)) {
+                  const currentUserMessage = run.messages.find((msg: any) => 
+                    msg.role === 'user' && msg.from_history === false
+                  )
+                  
+                  if (currentUserMessage) {
+                    // Use content from the current user message if available
+                    if (currentUserMessage.content) {
+                      userContent = currentUserMessage.content
+                    }
+                    
+                    // Map files from user message to attachments format
+                    if (currentUserMessage.files && currentUserMessage.files.length > 0) {
+                      attachments = currentUserMessage.files.map((file: { filename: string; mime_type: string }) => ({
+                        name: file.filename,
+                        type: file.mime_type,
+                        size: 0 // Size not available in stored session data
+                      }))
+                    }
+                  }
+                }
+                
+                // Fallback: try to get files from input if not found in messages
+                if (!attachments && run.input?.files && run.input.files.length > 0) {
+                  attachments = run.input.files.map((file: { filename: string; mime_type: string }) => ({
+                    name: file.filename,
+                    type: file.mime_type,
+                    size: 0
+                  }))
+                }
+
                 filteredMessages.push({
                   role: 'user',
-                  content: run.run_input ?? '',
-                  created_at: run.created_at
+                  content: userContent,
+                  created_at: run.created_at,
+                  attachments: attachments && attachments.length > 0 ? attachments : undefined
                 })
               }
 
