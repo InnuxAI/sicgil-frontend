@@ -275,3 +275,30 @@ export const cancelTeamRunAPI = async (
   }
 }
 
+// Blob storage API
+export const getBlobUrlAPI = async (
+  agentOSUrl: string,
+  blobName: string,
+  expiryHours: number = 24,
+  authToken?: string
+): Promise<{ url: string; blob_name: string } | null> => {
+  try {
+    const url = APIRoutes.GetBlobUrl(agentOSUrl, blobName, expiryHours)
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: createHeaders(authToken),
+      credentials: 'include' // Include cookies for auth
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error getting blob URL:', error)
+    return null
+  }
+}

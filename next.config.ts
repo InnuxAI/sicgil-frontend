@@ -16,6 +16,20 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        // Azure Blob Storage - allow all Azure storage accounts
+        protocol: 'https',
+        hostname: '*.blob.core.windows.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        // AWS S3 - if you're also using S3
+        protocol: 'https',
+        hostname: '*.s3.*.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }

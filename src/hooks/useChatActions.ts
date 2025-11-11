@@ -19,9 +19,12 @@ const useChatActions = () => {
   const setTeams = useStore((state) => state.setTeams)
   const setSelectedModel = useStore((state) => state.setSelectedModel)
   const setMode = useStore((state) => state.setMode)
-  const [agentId, setAgentId] = useQueryState('agent')
-  const [teamId, setTeamId] = useQueryState('team')
-  const [, setDbId] = useQueryState('db_id')
+  const selectedAgentId = useStore((state) => state.selectedAgentId)
+  const setSelectedAgentId = useStore((state) => state.setSelectedAgentId)
+  const selectedTeamId = useStore((state) => state.selectedTeamId)
+  const setSelectedTeamId = useStore((state) => state.setSelectedTeamId)
+  const selectedDbId = useStore((state) => state.selectedDbId)
+  const setSelectedDbId = useStore((state) => state.setSelectedDbId)
 
   const getStatus = useCallback(async () => {
     try {
@@ -83,56 +86,56 @@ const useChatActions = () => {
         teams = await getTeams()
         agents = await getAgents()
 
-        if (!agentId && !teamId) {
+        if (!selectedAgentId && !selectedTeamId) {
           const currentMode = useStore.getState().mode
 
           if (currentMode === 'team' && teams.length > 0) {
             const firstTeam = teams[0]
-            setTeamId(firstTeam.id)
+            setSelectedTeamId(firstTeam.id)
             setSelectedModel(firstTeam.model?.provider || '')
-            setDbId(firstTeam.db_id || '')
-            setAgentId(null)
+            setSelectedDbId(firstTeam.db_id || '')
+            setSelectedAgentId(null)
             setTeams(teams)
           } else if (currentMode === 'agent' && agents.length > 0) {
             const firstAgent = agents[0]
             setMode('agent')
-            setAgentId(firstAgent.id)
+            setSelectedAgentId(firstAgent.id)
             setSelectedModel(firstAgent.model?.model || '')
-            setDbId(firstAgent.db_id || '')
+            setSelectedDbId(firstAgent.db_id || '')
             setAgents(agents)
           }
         } else {
           setAgents(agents)
           setTeams(teams)
-          if (agentId) {
-            const agent = agents.find((a) => a.id === agentId)
+          if (selectedAgentId) {
+            const agent = agents.find((a) => a.id === selectedAgentId)
             if (agent) {
               setMode('agent')
               setSelectedModel(agent.model?.model || '')
-              setDbId(agent.db_id || '')
-              setTeamId(null)
+              setSelectedDbId(agent.db_id || '')
+              setSelectedTeamId(null)
             } else if (agents.length > 0) {
               const firstAgent = agents[0]
               setMode('agent')
-              setAgentId(firstAgent.id)
+              setSelectedAgentId(firstAgent.id)
               setSelectedModel(firstAgent.model?.model || '')
-              setDbId(firstAgent.db_id || '')
-              setTeamId(null)
+              setSelectedDbId(firstAgent.db_id || '')
+              setSelectedTeamId(null)
             }
-          } else if (teamId) {
-            const team = teams.find((t) => t.id === teamId)
+          } else if (selectedTeamId) {
+            const team = teams.find((t) => t.id === selectedTeamId)
             if (team) {
               setMode('team')
               setSelectedModel(team.model?.provider || '')
-              setDbId(team.db_id || '')
-              setAgentId(null)
+              setSelectedDbId(team.db_id || '')
+              setSelectedAgentId(null)
             } else if (teams.length > 0) {
               const firstTeam = teams[0]
               setMode('team')
-              setTeamId(firstTeam.id)
+              setSelectedTeamId(firstTeam.id)
               setSelectedModel(firstTeam.model?.provider || '')
-              setDbId(firstTeam.db_id || '')
-              setAgentId(null)
+              setSelectedDbId(firstTeam.db_id || '')
+              setSelectedAgentId(null)
             }
           }
         }
@@ -140,8 +143,8 @@ const useChatActions = () => {
         setIsEndpointActive(false)
         setMode('agent')
         setSelectedModel('')
-        setAgentId(null)
-        setTeamId(null)
+        setSelectedAgentId(null)
+        setSelectedTeamId(null)
       }
       return { agents, teams }
     } catch (error) {
@@ -149,8 +152,8 @@ const useChatActions = () => {
       setIsEndpointActive(false)
       setMode('agent')
       setSelectedModel('')
-      setAgentId(null)
-      setTeamId(null)
+      setSelectedAgentId(null)
+      setSelectedTeamId(null)
       setAgents([])
       setTeams([])
     } finally {
@@ -164,13 +167,13 @@ const useChatActions = () => {
     setIsEndpointLoading,
     setAgents,
     setTeams,
-    setAgentId,
+    setSelectedAgentId,
     setSelectedModel,
     setMode,
-    setTeamId,
-    setDbId,
-    agentId,
-    teamId
+    setSelectedTeamId,
+    setSelectedDbId,
+    selectedAgentId,
+    selectedTeamId
   ])
 
   return {

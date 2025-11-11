@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useState, memo, useMemo } from 'react'
 import { SavedPrompt } from './Library'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,7 +18,7 @@ interface LibraryItemProps {
   onDelete: (id: string) => void
 }
 
-const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
+const LibraryItem: FC<LibraryItemProps> = memo(({ prompt, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const truncatePrompt = (text: string, maxLength: number = 20) => {
@@ -26,8 +26,8 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
     return text.substring(0, maxLength) + '...'
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
+  const formatDate = useMemo(() => {
+    const date = new Date(prompt.created_at)
     const now = new Date()
     const diffInMs = now.getTime() - date.getTime()
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
@@ -38,7 +38,7 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
     if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
     if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`
     return `${Math.floor(diffInDays / 365)} years ago`
-  }
+  }, [prompt.created_at])
 
   return (
     <>
@@ -51,7 +51,7 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
             {truncatePrompt(prompt.prompt)}
           </p>
           <p className="text-[10px] text-muted-foreground mt-1">
-            {formatDate(prompt.created_at)}
+            {formatDate}
           </p>
         </div>
         <Button
@@ -98,6 +98,8 @@ const LibraryItem: FC<LibraryItemProps> = ({ prompt, onDelete }) => {
       </Dialog>
     </>
   )
-}
+})
+
+LibraryItem.displayName = 'LibraryItem'
 
 export default LibraryItem

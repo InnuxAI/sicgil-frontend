@@ -6,7 +6,7 @@ import { deleteSessionAPI } from '@/api/os'
 import { useStore } from '@/store'
 import { toast } from 'sonner'
 import Icon from '@/components/ui/icon'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
 import { truncateText, cn } from '@/lib/utils'
@@ -16,7 +16,7 @@ type SessionItemProps = SessionEntry & {
   currentSessionId: string | null
   onSessionClick: () => void
 }
-const SessionItem = ({
+const SessionItem = memo(({
   session_name: title,
   session_id,
   summary: summary,
@@ -24,9 +24,9 @@ const SessionItem = ({
   currentSessionId,
   onSessionClick
 }: SessionItemProps) => {
-  const [agentId] = useQueryState('agent')
-  const [teamId] = useQueryState('team')
-  const [dbId] = useQueryState('db_id')
+  const selectedAgentId = useStore((state) => state.selectedAgentId)
+  const selectedTeamId = useStore((state) => state.selectedTeamId)
+  const selectedDbId = useStore((state) => state.selectedDbId)
   const [, setSessionId] = useQueryState('session')
   const authToken = useStore((state) => state.authToken)
   const { getSession } = useSessionLoader()
@@ -39,15 +39,15 @@ const SessionItem = ({
   const displayTitle = summary?.summary || title
 
   const handleGetSession = async () => {
-    if (!(agentId || teamId || dbId)) return
+    if (!(selectedAgentId || selectedTeamId || selectedDbId)) return
 
     onSessionClick()
     await getSession(
       {
         entityType: mode,
-        agentId,
-        teamId,
-        dbId: dbId ?? ''
+        agentId: selectedAgentId,
+        teamId: selectedTeamId,
+        dbId: selectedDbId ?? ''
       },
       session_id
     )
@@ -55,12 +55,12 @@ const SessionItem = ({
   }
 
   const handleDeleteSession = async () => {
-    if (!(agentId || teamId || dbId)) return
+    if (!(selectedAgentId || selectedTeamId || selectedDbId)) return
     setIsDeleting(true)
     try {
       const response = await deleteSessionAPI(
         selectedEndpoint,
-        dbId ?? '',
+        selectedDbId ?? '',
         session_id,
         authToken
       )
@@ -126,6 +126,8 @@ const SessionItem = ({
       />
     </>
   )
-}
+})
+
+SessionItem.displayName = 'SessionItem'
 
 export default SessionItem

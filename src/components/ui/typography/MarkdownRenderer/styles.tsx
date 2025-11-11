@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import CodeBlock from '../CodeBlock'
+import BlobImage from '@/components/ui/BlobImage'
 
 import type {
   UnorderedListProps,
@@ -188,10 +189,24 @@ const Heading6 = ({ className, ...props }: HeadingProps) => (
   />
 )
 
-const Img = ({ src, alt }: ImgProps) => {
+const Img = (props: any) => {
   const [error, setError] = useState(false)
 
-  if (!src) return null
+  const src = props.src || props.node?.properties?.src
+
+  if (!src) {
+    return null
+  }
+
+  // Check if this is a blob storage reference (plain filename without protocol)
+  if (typeof src === 'string') {
+    // If it's not an absolute URL (http/https/data), treat it as a blob reference
+    const isAbsoluteUrl = src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')
+    
+    if (!isAbsoluteUrl && (src.endsWith('.png') || src.endsWith('.jpg') || src.endsWith('.jpeg') || src.endsWith('.gif'))) {
+      return <BlobImage blobName={src} alt={props.alt} />
+    }
+  }
 
   const srcUrl = typeof src === 'string' ? src : URL.createObjectURL(src)
 
@@ -213,7 +228,7 @@ const Img = ({ src, alt }: ImgProps) => {
           src={srcUrl}
           width={1280}
           height={720}
-          alt={alt ?? 'Rendered image'}
+          alt={props.alt ?? 'Rendered image'}
           className="size-full rounded-md object-cover"
           onError={() => setError(true)}
           unoptimized

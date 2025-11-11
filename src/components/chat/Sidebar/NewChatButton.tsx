@@ -1,11 +1,12 @@
 'use client'
 
+import { memo } from 'react'
 import { Button } from '@/components/ui/button'
 import Icon from '@/components/ui/icon'
 import useChatActions from '@/hooks/useChatActions'
 import { useStore } from '@/store'
 
-function NewChatButton() {
+const NewChatButton = memo(() => {
   const { clearChat } = useChatActions()
   const { messages } = useStore()
   return (
@@ -20,6 +21,8 @@ function NewChatButton() {
       </div>
     </Button>
   )
-}
+})
+
+NewChatButton.displayName = 'NewChatButton'
 
 export default NewChatButton

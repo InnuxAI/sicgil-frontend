@@ -5,6 +5,8 @@ import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/lib/auth/AuthContext'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
+import AppShell from '@/components/AppShell'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   weight: '400',
@@ -28,6 +30,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Check if OS_SECURITY_KEY is defined
+  const hasEnvToken = !!process.env.NEXT_PUBLIC_OS_SECURITY_KEY
+  const envToken = process.env.NEXT_PUBLIC_OS_SECURITY_KEY || ''
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${dmMono.variable} antialiased`}>
@@ -38,7 +44,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <NuqsAdapter>{children}</NuqsAdapter>
+            <NuqsAdapter>
+              <AppShell hasEnvToken={hasEnvToken} envToken={envToken}>
+                {children}
+              </AppShell>
+            </NuqsAdapter>
           </AuthProvider>
           <Toaster />
         </ThemeProvider>
@@ -46,3 +56,4 @@ export default function RootLayout({
     </html>
   )
 }
+

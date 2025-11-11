@@ -1,11 +1,11 @@
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 
 import { cn } from '@/lib/utils'
 
 import { ICONS } from './constants'
 import { type IconProps } from './types'
 
-const Icon: FC<IconProps> = ({
+const Icon: FC<IconProps> = memo(({
   type,
   size = 'sm',
   className,
@@ -30,6 +30,8 @@ const Icon: FC<IconProps> = ({
       )}
     />
   )
-}
+})
+
+Icon.displayName = 'Icon'
 
 export default Icon

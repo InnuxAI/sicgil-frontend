@@ -18,6 +18,7 @@ import { useQueryState } from 'nuqs'
 import { truncateText } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useRouter, usePathname } from 'next/navigation'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7777";
 
@@ -97,6 +98,27 @@ const NewChatButton = ({
   </Button>
 )
 
+const DashboardButton = ({
+  onClick,
+  isActive
+}: {
+  onClick: () => void
+  isActive: boolean
+}) => (
+  <Button
+    onClick={onClick}
+    size="lg"
+    className={`h-9 w-full rounded-xl text-xs font-medium transition-all ${
+      isActive 
+        ? 'bg-primary text-background hover:bg-primary/80' 
+        : 'bg-accent border border-primary/15 text-primary hover:bg-accent/80'
+    }`}
+  >
+    <Icon type="activity" size="xs" className={isActive ? 'text-background' : 'text-primary'} />
+    <span className="uppercase font-semibold">Dashboard</span>
+  </Button>
+)
+
 const ModelDisplay = ({ model }: { model: string }) => (
   <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase">
     {(() => {
@@ -122,7 +144,6 @@ const Endpoint = () => {
   const [isMounted, setIsMounted] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isRotating, setIsRotating] = useState(false)
-  const [, setAgentId] = useQueryState('agent')
   const [, setSessionId] = useQueryState('session')
 
   useEffect(() => {
@@ -140,7 +161,6 @@ const Endpoint = () => {
     }
     const cleanEndpoint = endpointValue.replace(/\/$/, '').trim()
     setSelectedEndpoint(cleanEndpoint)
-    setAgentId(null)
     setSessionId(null)
     setIsEditing(false)
     setIsHovering(false)
@@ -262,7 +282,11 @@ const Sidebar = ({
   hasEnvToken?: boolean
   envToken?: string
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+  const isDashboardActive = pathname === '/dashboard'
+  
+  const [isCollapsed, setIsCollapsed] = useState(isDashboardActive)
   const { clearChat, focusChatInput, initialize } = useChatActions()
   const {
     messages,
@@ -271,11 +295,11 @@ const Sidebar = ({
     selectedModel,
     hydrated,
     isEndpointLoading,
-    mode
+    mode,
+    selectedAgentId,
+    selectedTeamId
   } = useStore()
   const [isMounted, setIsMounted] = useState(false)
-  const [agentId] = useQueryState('agent')
-  const [teamId] = useQueryState('team')
 
   useEffect(() => {
     setIsMounted(true)
@@ -283,14 +307,27 @@ const Sidebar = ({
     if (hydrated) initialize()
   }, [selectedEndpoint, initialize, hydrated, mode])
 
+  useEffect(() => {
+    // Collapse sidebar by default on dashboard page
+    if (isDashboardActive) {
+      setIsCollapsed(true)
+    }
+  }, [isDashboardActive])
+
   const handleNewChat = () => {
+    router.push('/')
     clearChat()
     focusChatInput()
   }
 
   const handleLogoClick = () => {
+    router.push('/')
     clearChat()
     focusChatInput()
+  }
+
+  const handleDashboardClick = () => {
+    router.push('/dashboard')
   }
 
   return (
@@ -329,6 +366,10 @@ const Sidebar = ({
             disabled={messages.length === 0}
             onClick={handleNewChat}
           />
+          <DashboardButton
+            onClick={handleDashboardClick}
+            isActive={isDashboardActive}
+          />
           {isMounted && (
             <>
               <CollapsibleSection title="Server" defaultOpen={false}>
@@ -359,7 +400,7 @@ const Sidebar = ({
                         <>
                           <ModeSelector />
                           <EntitySelector />
-                          {selectedModel && (agentId || teamId) && (
+                          {selectedModel && (selectedAgentId || selectedTeamId) && (
                             <ModelDisplay model={selectedModel} />
                           )}
                         </>

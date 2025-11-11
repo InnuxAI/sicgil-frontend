@@ -36,7 +36,10 @@ import {
   ChevronDown,
   ChevronUp,
   Trash,
-  Paperclip
+  Paperclip,
+  Activity,
+  AlertTriangle,
+  Clock
 } from 'lucide-react'
 
 import { PlusIcon } from '@radix-ui/react-icons'
@@ -77,5 +80,8 @@ export const ICONS: IconTypeMap = {
   'plus-icon': PlusIcon,
   references: ReferencesIcon,
   trash: Trash,
-  paperclip: Paperclip
+  paperclip: Paperclip,
+  activity: Activity,
+  'alert-triangle': AlertTriangle,
+  clock: Clock
 }

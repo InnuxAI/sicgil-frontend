@@ -25,10 +25,7 @@ export default function UserProfile() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const clearUserState = useStore((state) => state.clearUserState);
-  const [, setAgentId] = useQueryState('agent');
-  const [, setTeamId] = useQueryState('team');
   const [, setSessionId] = useQueryState('session');
-  const [, setDbId] = useQueryState('db_id');
 
   const handleSignOut = async () => {
     try {
@@ -38,12 +35,9 @@ export default function UserProfile() {
       // Show success message
       toast.success("Signed out successfully");
       
-      // Clear state and params synchronously
+      // Clear state (includes agent, team, db_id in clearUserState)
       clearUserState();
-      setAgentId(null);
-      setTeamId(null);
       setSessionId(null);
-      setDbId(null);
       
       // Navigate to login page (replace to prevent back navigation)
       router.replace("/login");
@@ -87,7 +81,7 @@ export default function UserProfile() {
           <Icon type="chevron-up" size="xs" className="text-muted-foreground" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" side="top" className="w-56">
+      <DropdownMenuContent align="end" side="right" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

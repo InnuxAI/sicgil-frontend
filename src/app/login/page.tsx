@@ -69,7 +69,7 @@ export default function LoginPage() {
         <div className="relative z-10 space-y-8">
           <div>
             <h2 className="text-4xl font-bold text-foreground mb-4 leading-tight">
-              AI-Powered Document<br />Analysis & Insights
+              AI-Powered <br /> Fleet Intelligence
             </h2>
             <p className="text-foreground/80 text-lg leading-relaxed">
               Unlock intelligent insights from your business documents with advanced AI analysis. Streamline operations, enhance decision-making, and optimize your workflow with automated document intelligence.

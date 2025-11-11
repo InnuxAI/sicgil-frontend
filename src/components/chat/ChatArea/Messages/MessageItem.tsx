@@ -20,7 +20,7 @@ interface MessageProps {
   onRetry?: () => void
 }
 
-const AgentMessage = ({ message, onRetry }: MessageProps) => {
+const AgentMessage = memo(({ message, onRetry }: MessageProps) => {
   const { streamingErrorMessage } = useStore()
   let messageContent
   if (message.streamingError) {
@@ -107,7 +107,7 @@ const AgentMessage = ({ message, onRetry }: MessageProps) => {
       </div>
     </div>
   )
-}
+})
 
 const UserMessage = memo(({ message }: MessageProps) => {
   const [isSaving, setIsSaving] = useState(false)

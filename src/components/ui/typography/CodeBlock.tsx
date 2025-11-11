@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useState, memo, useMemo } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Copy, Check } from 'lucide-react'
@@ -45,10 +45,12 @@ const languageConfig: Record<string, { label: string; color: string }> = {
   text: { label: 'Plain Text', color: 'bg-muted/20 text-muted-foreground' }
 }
 
-const CodeBlock: FC<CodeBlockProps> = ({ children, className, inline }) => {
+const CodeBlock: FC<CodeBlockProps> = memo(({ children, className, inline }) => {
   const [copied, setCopied] = useState(false)
-  const language = getLanguageFromClassName(className)
-  const config = languageConfig[language] || languageConfig.text
+  
+  // Memoize language detection
+  const language = useMemo(() => getLanguageFromClassName(className), [className])
+  const config = useMemo(() => languageConfig[language] || languageConfig.text, [language])
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(children)
@@ -127,6 +129,8 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, className, inline }) => {
       </div>
     </div>
   )
-}
+})
+
+CodeBlock.displayName = 'CodeBlock'
 
 export default CodeBlock

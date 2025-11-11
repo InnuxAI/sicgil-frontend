@@ -15,21 +15,23 @@ import { useEffect } from 'react'
 import useChatActions from '@/hooks/useChatActions'
 
 export function EntitySelector() {
-  const { mode, agents, teams, setMessages, setSelectedModel } = useStore()
+  const { 
+    mode, 
+    agents, 
+    teams, 
+    setMessages, 
+    setSelectedModel,
+    selectedAgentId,
+    setSelectedAgentId,
+    selectedTeamId,
+    setSelectedTeamId
+  } = useStore()
 
   const { focusChatInput } = useChatActions()
-  const [agentId, setAgentId] = useQueryState('agent', {
-    parse: (value) => value || undefined,
-    history: 'push'
-  })
-  const [teamId, setTeamId] = useQueryState('team', {
-    parse: (value) => value || undefined,
-    history: 'push'
-  })
   const [, setSessionId] = useQueryState('session')
 
   const currentEntities = mode === 'team' ? teams : agents
-  const currentValue = mode === 'team' ? teamId : agentId
+  const currentValue = mode === 'team' ? selectedTeamId : selectedAgentId
   const placeholder = mode === 'team' ? 'Select Team' : 'Select Agent'
 
   useEffect(() => {
@@ -37,9 +39,6 @@ export function EntitySelector() {
       const entity = currentEntities.find((item) => item.id === currentValue)
       if (entity) {
         setSelectedModel(entity.model?.model || '')
-        if (mode === 'team') {
-          setTeamId(entity.id)
-        }
         if (entity.model?.model) {
           focusChatInput()
         }
@@ -55,11 +54,11 @@ export function EntitySelector() {
     setSelectedModel(selectedEntity?.model?.provider || '')
 
     if (mode === 'team') {
-      setTeamId(newValue)
-      setAgentId(null)
+      setSelectedTeamId(newValue)
+      setSelectedAgentId(null)
     } else {
-      setAgentId(newValue)
-      setTeamId(null)
+      setSelectedAgentId(newValue)
+      setSelectedTeamId(null)
     }
 
     setMessages([])

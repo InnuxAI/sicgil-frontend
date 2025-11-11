@@ -17,5 +17,9 @@ export const APIRoutes = {
   CancelTeamRun: (agentOSUrl: string, teamId: string, runId: string) =>
     `${agentOSUrl}/teams/${teamId}/runs/${runId}/cancel`,
   DeleteTeamSession: (agentOSUrl: string, teamId: string, sessionId: string) =>
-    `${agentOSUrl}/v1//teams/${teamId}/sessions/${sessionId}`
+    `${agentOSUrl}/v1//teams/${teamId}/sessions/${sessionId}`,
+  
+  // Blob storage routes
+  GetBlobUrl: (agentOSUrl: string, blobName: string, expiryHours: number = 24) =>
+    `${agentOSUrl}/api/blobs/${encodeURIComponent(blobName)}/url?expiry_hours=${expiryHours}`
 }

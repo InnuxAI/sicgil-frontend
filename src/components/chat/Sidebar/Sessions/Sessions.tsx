@@ -34,13 +34,7 @@ const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
 
 const Sessions = () => {
   const { user } = useAuth()
-  const [agentId] = useQueryState('agent', {
-    parse: (v: string | null) => v || undefined,
-    history: 'push'
-  })
-  const [teamId] = useQueryState('team')
   const [sessionId] = useQueryState('session')
-  const [dbId] = useQueryState('db_id')
 
   const {
     selectedEndpoint,
@@ -50,7 +44,10 @@ const Sessions = () => {
     hydrated,
     sessionsData,
     setSessionsData,
-    isSessionsLoading
+    isSessionsLoading,
+    selectedAgentId,
+    selectedTeamId,
+    selectedDbId
   } = useStore()
 
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -80,35 +77,35 @@ const Sessions = () => {
   }, [])
 
   useEffect(() => {
-    if (hydrated && sessionId && selectedEndpoint && (agentId || teamId)) {
-      const entityType = agentId ? 'agent' : 'team'
-      getSession({ entityType, agentId, teamId, dbId }, sessionId)
+    if (hydrated && sessionId && selectedEndpoint && (selectedAgentId || selectedTeamId)) {
+      const entityType = selectedAgentId ? 'agent' : 'team'
+      getSession({ entityType, agentId: selectedAgentId, teamId: selectedTeamId, dbId: selectedDbId }, sessionId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, sessionId, selectedEndpoint, agentId, teamId, dbId])
+  }, [hydrated, sessionId, selectedEndpoint, selectedAgentId, selectedTeamId, selectedDbId])
 
   useEffect(() => {
     if (!selectedEndpoint || isEndpointLoading) return
-    if (!(agentId || teamId || dbId)) {
+    if (!(selectedAgentId || selectedTeamId || selectedDbId)) {
       setSessionsData([])
       return
     }
     setSessionsData([])
     getSessions({
       entityType: mode,
-      agentId,
-      teamId,
-      dbId
+      agentId: selectedAgentId,
+      teamId: selectedTeamId,
+      dbId: selectedDbId
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedEndpoint,
-    agentId,
-    teamId,
+    selectedAgentId,
+    selectedTeamId,
     mode,
     isEndpointLoading,
     getSessions,
-    dbId,
+    selectedDbId,
     user?.id  // Re-fetch sessions when user changes (login/logout)
   ])
 

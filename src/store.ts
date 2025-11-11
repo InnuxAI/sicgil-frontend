@@ -48,6 +48,12 @@ interface Store {
   setSelectedModel: (model: string) => void
   mode: 'agent' | 'team'
   setMode: (mode: 'agent' | 'team') => void
+  selectedAgentId: string | null
+  setSelectedAgentId: (agentId: string | null) => void
+  selectedTeamId: string | null
+  setSelectedTeamId: (teamId: string | null) => void
+  selectedDbId: string | null
+  setSelectedDbId: (dbId: string | null) => void
   sessionsData: SessionEntry[] | null
   setSessionsData: (
     sessionsData:
@@ -99,6 +105,12 @@ export const useStore = create<Store>()(
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       mode: 'agent',
       setMode: (mode) => set(() => ({ mode })),
+      selectedAgentId: null,
+      setSelectedAgentId: (selectedAgentId) => set(() => ({ selectedAgentId })),
+      selectedTeamId: null,
+      setSelectedTeamId: (selectedTeamId) => set(() => ({ selectedTeamId })),
+      selectedDbId: null,
+      setSelectedDbId: (selectedDbId) => set(() => ({ selectedDbId })),
       sessionsData: null,
       setSessionsData: (sessionsData) =>
         set((state) => ({
@@ -119,6 +131,9 @@ export const useStore = create<Store>()(
           agents: [],
           teams: [],
           selectedModel: '',
+          selectedAgentId: null,
+          selectedTeamId: null,
+          selectedDbId: null,
           currentRunId: null,
           isStreaming: false,
           streamingErrorMessage: ''
@@ -128,7 +143,11 @@ export const useStore = create<Store>()(
       name: 'endpoint-storage',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        selectedEndpoint: state.selectedEndpoint
+        selectedEndpoint: state.selectedEndpoint,
+        selectedAgentId: state.selectedAgentId,
+        selectedTeamId: state.selectedTeamId,
+        selectedDbId: state.selectedDbId,
+        mode: state.mode
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated?.()

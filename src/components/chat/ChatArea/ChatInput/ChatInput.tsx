@@ -16,8 +16,8 @@ const ChatInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { handleStreamResponse } = useAIChatStreamHandler()
-  const [selectedAgent] = useQueryState('agent')
-  const [teamId] = useQueryState('team')
+  const selectedAgentId = useStore((state) => state.selectedAgentId)
+  const selectedTeamId = useStore((state) => state.selectedTeamId)
   const [inputMessage, setInputMessage] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const isStreaming = useStore((state) => state.isStreaming)
@@ -52,17 +52,17 @@ const ChatInput = () => {
       const endpointUrl = constructEndpointUrl(selectedEndpoint)
       let success = false
 
-      if (mode === 'agent' && selectedAgent) {
+      if (mode === 'agent' && selectedAgentId) {
         success = await cancelAgentRunAPI(
           endpointUrl,
-          selectedAgent,
+          selectedAgentId,
           currentRunId,
           authToken
         )
-      } else if (mode === 'team' && teamId) {
+      } else if (mode === 'team' && selectedTeamId) {
         success = await cancelTeamRunAPI(
           endpointUrl,
-          teamId,
+          selectedTeamId,
           currentRunId,
           authToken
         )
@@ -150,7 +150,7 @@ const ChatInput = () => {
         {/* File Upload Button */}
         <Button
           onClick={() => fileInputRef.current?.click()}
-          disabled={!(selectedAgent || teamId) || isStreaming}
+          disabled={!(selectedAgentId || selectedTeamId) || isStreaming}
           size="icon"
           variant="ghost"
           className="bg-background-secondary hover:border-accent hover:bg-background hover:rounded-xl rounded-3xl p-5 transition-all"
@@ -183,13 +183,13 @@ const ChatInput = () => {
             }
           }}
           className="bg-background focus:border-accent w-full border px-4 text-sm"
-          disabled={!(selectedAgent || teamId)}
+          disabled={!(selectedAgentId || selectedTeamId)}
           ref={chatInputRef}
         />
         <Button
           onClick={isStreaming ? handleCancelRun : handleSubmit}
           disabled={
-            !(selectedAgent || teamId) ||
+            !(selectedAgentId || selectedTeamId) ||
             (!isStreaming && !inputMessage.trim() && selectedFiles.length === 0)
           }
           size="icon"

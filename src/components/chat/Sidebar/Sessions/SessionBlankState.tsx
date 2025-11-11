@@ -86,8 +86,7 @@ const HistoryBlankStateIcon = () => (
 )
 
 const SessionBlankState = () => {
-  const { selectedEndpoint, isEndpointActive } = useStore()
-  const [agentId] = useQueryState('agent')
+  const { selectedEndpoint, isEndpointActive, selectedAgentId } = useStore()
 
   const errorMessage = (() => {
     switch (true) {
@@ -95,7 +94,7 @@ const SessionBlankState = () => {
         return 'Endpoint is not connected. Please connect the endpoint to see the history.'
       case !selectedEndpoint:
         return 'Select an endpoint to see the history.'
-      case !agentId:
+      case !selectedAgentId:
         return 'Select an agent to see the history.'
       default:
         return 'No session records yet. Start a conversation to create one.'
